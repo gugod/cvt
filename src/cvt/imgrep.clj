@@ -28,6 +28,8 @@
         (.detect  detective im-big kp-big)
         (.compute extractor im-big kp-big de-big)
         (.match matcher de-big matches)
-        (let [min-distance (reduce (fn [a b] (if (> a b) b a)) (map (fn [it] (.distance it)) (.toList matches)))]
-        (if (> 0.1 min-distance) (println (str (.getPath image-big) " " min-distance))))))))
-
+        (if (< 2 (.total matches))
+          (let [min-distance (reduce (fn [a b] (if (> a b) b a)) (map (fn [it] (.distance it)) (.toList matches)))
+                total-points (.total matches)]
+            (if (> 0.1 min-distance)
+              (println (str (.getPath image-big) " " total-points " " min-distance)))))))))
