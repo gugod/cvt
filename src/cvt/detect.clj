@@ -37,12 +37,12 @@
 (defn filename [path] (.getName (io/file path)))
 
 (defn -main
-  [image-path]
-  (let [image (Highgui/imread image-path)]
+  [image-path & args]
+  (let [image (Highgui/imread image-path) cascade-path (first args)]
     (doall
      (map (fn [it] (println (str/join " " (flatten [image-path it]))))
           (filter
            (fn [it] (not (str/blank? (last it))))
            (map (fn [cascade]
                   [(filename cascade) (detection-to-string (detect-with-classfier image (CascadeClassifier. cascade)))])
-                (all_cascades)))))))
+                (if (str/blank? cascade-path) (all_cascades) [cascade-path])))))))
