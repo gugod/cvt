@@ -19,6 +19,8 @@
     (.compute extractor im-small kp-small de-small)
     (.add matcher [de-small])
 
+    (println (str "The small image has " (.total de-small) " features"))
+
     (doseq [image-big (filter (fn [it] (and (.isFile it) (re-find #".((?i)jpg|png)$" (.getPath it))))
                               (file-seq (clojure.java.io/file image-dir)))]
       (let [im-big  (Highgui/imread (.getPath image-big))
@@ -31,4 +33,8 @@
         (if (< 2 (.total matches))
           (let [min-distance (reduce (fn [a b] (if (> a b) b a)) (map (fn [it] (.distance it)) (.toList matches)))
                 total-points (.total matches)]
-            (println (str (.getPath image-big) " " total-points " " min-distance))))))))
+            (if (and (< min-distance 2) (> total-points (* 0.8 (.total de-small))))
+              (println (str (.getPath image-big) " " total-points " " min-distance)))))))))
+            
+
+            
