@@ -9,9 +9,9 @@
            org.opencv.features2d.FeatureDetector))
 
 (defn -main [image-small image-dir]
-  (let [detective (FeatureDetector/create FeatureDetector/SURF)
-        extractor (DescriptorExtractor/create DescriptorExtractor/SURF)
-        matcher   (DescriptorMatcher/create DescriptorMatcher/BRUTEFORCE)
+  (let [detective (FeatureDetector/create FeatureDetector/FAST)
+        extractor (DescriptorExtractor/create DescriptorExtractor/ORB)
+        matcher   (DescriptorMatcher/create DescriptorMatcher/BRUTEFORCE_HAMMING)
         im-small  (Highgui/imread image-small)
         kp-small  (new MatOfKeyPoint)
         de-small  (new Mat)]
@@ -19,7 +19,7 @@
     (.compute extractor im-small kp-small de-small)
     (.add matcher [de-small])
 
-    (doseq [image-big (filter (fn [it] (.isFile it))
+    (doseq [image-big (filter (fn [it] (and (.isFile it) (re-find #".((?i)jpg|png)$" (.getPath it))))
                               (file-seq (clojure.java.io/file image-dir)))]
       (let [im-big  (Highgui/imread (.getPath image-big))
             kp-big  (new MatOfKeyPoint)
@@ -31,5 +31,4 @@
         (if (< 2 (.total matches))
           (let [min-distance (reduce (fn [a b] (if (> a b) b a)) (map (fn [it] (.distance it)) (.toList matches)))
                 total-points (.total matches)]
-            (if (> 0.1 min-distance)
-              (println (str (.getPath image-big) " " total-points " " min-distance)))))))))
+            (println (str (.getPath image-big) " " total-points " " min-distance))))))))
