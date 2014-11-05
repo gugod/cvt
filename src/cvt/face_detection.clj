@@ -1,4 +1,7 @@
 (ns cvt.face-detection
+  (:require
+   [clojure.java.io :as io]
+   [clojure.string :as str])
   (:import
    org.opencv.core.Core
    org.opencv.core.Mat
@@ -27,8 +30,15 @@
 (defn face-detect
   [image-path]
   (let [image   (Highgui/imread image-path)
-        face-classifier (CascadeClassifier. "/usr/share/opencv/lbpcascades/lbpcascade_frontalface.xml")
+        face-classifier (CascadeClassifier. (.getPath (io/file (io/resource "cascades/lbpcascades/lbpcascade_frontalface.xml"))))
         face-detected   (atom [])]
     (reset! face-detected (MatOfRect.))
     (.detectMultiScale face-classifier image @face-detected)
     @face-detected))
+
+(defn -main
+  "I can do face detection: lein run -m cvt.face-detection ~/Pictures/lena.png"
+  [image-path]
+  (let [face-bbox (detection-to-string (face-detect image-path))]
+    (if (not (str/blank? face-bbox))
+      (println (str/join " " [image-path face-bbox])))))
