@@ -1,7 +1,7 @@
 (ns cvt.draw-rectangles
   (:require [clojure.string :as str])
   (:import
-   (org.opencv.core Core Rect Point Scalar)
+   (org.opencv.core Core Point Scalar)
    (org.opencv.highgui Highgui)))
 
 (defn draw-bbox
