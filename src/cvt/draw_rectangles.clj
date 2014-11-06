@@ -14,8 +14,8 @@
                     5)))
 
 (defn -main
-  [image-path & rectangles]
-  (let [image (Highgui/imread image-path)]
+  [input-image-path output-image-path & rectangles]
+  (let [image (Highgui/imread input-image-path)]
     (doall (map (fn [bbox] (draw-bbox image bbox)) rectangles))
-    (Highgui/imwrite "/tmp/out.png" image)
+    (Highgui/imwrite output-image-path image)
     (println "done")))
