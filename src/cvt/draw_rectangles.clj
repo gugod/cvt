@@ -11,10 +11,10 @@
                     (Point. (nth bbox 0) (nth bbox 1))
                     (Point. (nth bbox 2) (nth bbox 3))
                     (Scalar. 255.0)
-                    5)))
+                    2)))
 
 (defn -main
-  [input-image-path output-image-path & rectangles]
+  [output-image-path input-image-path & rectangles]
   (let [image (Highgui/imread input-image-path)]
     (doall (map (fn [bbox] (draw-bbox image bbox)) rectangles))
     (Highgui/imwrite output-image-path image)
