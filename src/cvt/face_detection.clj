@@ -3,7 +3,8 @@
    [clojure.java.io :as io]
    [clojure.string :as str])
   (:import
-   (org.opencv.core MatOfRect)
+   (org.opencv.core Mat MatOfRect)
+   (org.opencv.imgproc Imgproc)
    (org.opencv.highgui Highgui)
    (org.opencv.objdetect CascadeClassifier)))
 
@@ -25,8 +26,13 @@
 (defn face-detect
   [image-path]
   (let [image   (Highgui/imread image-path)
+        image2  (Mat.)
         face-classifier (CascadeClassifier. (.getPath (io/file (io/resource "cascades/lbpcascades/lbpcascade_frontalface.xml"))))
         face-detected   (atom [])]
+
+    (Imgproc/cvtColor image image2 Imgproc/COLOR_RGB2GRAY)
+    (Imgproc/equalizeHist image2 image)
+
     (reset! face-detected (MatOfRect.))
     (.detectMultiScale face-classifier image @face-detected)
     @face-detected))
