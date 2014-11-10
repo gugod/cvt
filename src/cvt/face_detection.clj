@@ -1,4 +1,5 @@
 (ns cvt.face-detection
+  (:use cvt.core)
   (:require
    [clojure.java.io :as io]
    [clojure.string :as str])
@@ -45,4 +46,4 @@
                       face-bbox (detection-to-string (face-detect image-path))]
                   (if (not (str/blank? face-bbox))
                     (println (str/join " " [image-path face-bbox])))))
-              (filter (fn [it] (and (.isFile it) (re-find #".((?i)jpg|png)$" (.getPath it)))) (file-seq (io/file path))))))
+              (image-file-seq path))))

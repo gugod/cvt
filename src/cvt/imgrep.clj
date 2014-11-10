@@ -1,4 +1,5 @@
 (ns cvt.imgrep
+  (:use cvt.core)
   (:import org.opencv.highgui.Highgui
            org.opencv.core.Mat
            org.opencv.core.MatOfKeyPoint
@@ -21,8 +22,7 @@
 
     (println (str "The small image has " (.total de-small) " features"))
 
-    (doseq [image-big (filter (fn [it] (and (.isFile it) (re-find #".((?i)jpg|png)$" (.getPath it))))
-                              (file-seq (clojure.java.io/file image-dir)))]
+    (doseq [image-big (image-file-seq image-dir)]
       (let [im-big  (Highgui/imread (.getPath image-big))
             kp-big  (new MatOfKeyPoint)
             de-big  (new Mat)
