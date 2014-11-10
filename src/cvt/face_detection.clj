@@ -38,8 +38,11 @@
     @face-detected))
 
 (defn -main
-  "I can do face detection: lein run -m cvt.face-detection ~/Pictures/lena.png"
-  [image-path]
-  (let [face-bbox (detection-to-string (face-detect image-path))]
-    (if (not (str/blank? face-bbox))
-      (println (str/join " " [image-path face-bbox])))))
+  "I can do face detection: lein run -m cvt.face-detection ~/Pictures/"
+  [path]
+  (doall (map (fn [image-io]
+                (let [image-path (.getPath image-io)
+                      face-bbox (detection-to-string (face-detect image-path))]
+                  (if (not (str/blank? face-bbox))
+                    (println (str/join " " [image-path face-bbox])))))
+              (filter (fn [it] (and (.isFile it) (re-find #".((?i)jpg|png)$" (.getPath it)))) (file-seq (io/file path))))))
