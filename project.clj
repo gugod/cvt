@@ -7,7 +7,6 @@
                  [opencv/opencv "2.4.9"]
                  [opencv/opencv-native "2.4.9"]]
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
-  :plugins [[lein-localrepo "0.5.2"]]
   :main ^:skip-aot cvt.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
