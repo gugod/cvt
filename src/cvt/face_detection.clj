@@ -31,8 +31,10 @@
         face-classifier (CascadeClassifier. (.getPath (io/file (io/resource "cascades/lbpcascades/lbpcascade_frontalface.xml"))))
         face-detected   (atom [])]
 
-    (Imgproc/cvtColor image image2 Imgproc/COLOR_RGB2GRAY)
-    (Imgproc/equalizeHist image2 image)
+    (if (> (.channels image) 1)
+      (do
+        (Imgproc/cvtColor image image2 Imgproc/COLOR_RGB2GRAY)
+        (Imgproc/equalizeHist image2 image)))
 
     (reset! face-detected (MatOfRect.))
     (.detectMultiScale face-classifier image @face-detected)
