@@ -9,16 +9,6 @@
    (org.opencv.highgui Highgui)
    (org.opencv.objdetect CascadeClassifier)))
 
-(defn detection-to-bbox
-  [detections]
-  (doall (map (fn [rect]
-                (clojure.string/join
-                 ","
-                 [(.x rect) (.y rect)
-                  (+ (.x rect) (.width rect))
-                  (+ (.y rect) (.height rect))]))
-              (.toArray detections))))
-
 (defn detection-to-string
   [detections]
   (clojure.string/join " "

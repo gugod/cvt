@@ -1,4 +1,5 @@
 (ns cvt.detect
+  (:use cvt.core)
   (:require
    [clojure.string :as str]
    [clojure.java.io :as io])
@@ -6,16 +7,6 @@
    (org.opencv.core MatOfRect)
    (org.opencv.highgui Highgui)
    (org.opencv.objdetect CascadeClassifier)))
-
-(defn detection-to-bbox
-  [detections]
-  (doall (map (fn [rect]
-                (str/join
-                 ","
-                 [(.x rect) (.y rect)
-                  (+ (.x rect) (.width rect))
-                  (+ (.y rect) (.height rect))]))
-              (.toArray detections))))
 
 (defn detection-to-string
   [detections]
