@@ -9,9 +9,7 @@
 (defn imread-reoriented
   ""
   [image-path]
-  (let [temp-file "/tmp/cvt-reoriented.jpg"]
-    (ceo/without-exif (io/file image-path) (io/file temp-file))
-    (Highgui/imread temp-file)))
+  (Highgui/imread (.getPath (ceo/without-exif (io/file image-path)))))
 
 (defn image-file-seq
   "file-seq + filter that gives only a sequence of image files."
