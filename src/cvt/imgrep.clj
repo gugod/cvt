@@ -13,7 +13,7 @@
   (let [detective (FeatureDetector/create FeatureDetector/FAST)
         extractor (DescriptorExtractor/create DescriptorExtractor/ORB)
         matcher   (DescriptorMatcher/create DescriptorMatcher/BRUTEFORCE_HAMMING)
-        im-small  (Highgui/imread image-small)
+        im-small  (imread-reoriented image-small)
         kp-small  (new MatOfKeyPoint)
         de-small  (new Mat)]
     (.detect detective im-small kp-small)
@@ -23,7 +23,7 @@
     (println (str "The small image has " (.total de-small) " features"))
 
     (doseq [image-big (image-file-seq image-dir)]
-      (let [im-big  (Highgui/imread (.getPath image-big))
+      (let [im-big  (imread-reoriented (.getPath image-big))
             kp-big  (new MatOfKeyPoint)
             de-big  (new Mat)
             matches (new MatOfDMatch)]

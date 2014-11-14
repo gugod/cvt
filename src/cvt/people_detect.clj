@@ -32,6 +32,6 @@
 
 (defn -main
   [image-path]
-  (let [image (Highgui/imread image-path)]
+  (let [image (imread-reoriented image-path)]
     (let [it (detection-to-string (detect-people image))]
       (if (not (str/blank? it)) (println (str/join " " [image-path it]))))))

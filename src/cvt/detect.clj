@@ -24,7 +24,7 @@
 
 (defn -main
   [image-path & args]
-  (let [image (Highgui/imread image-path) cascade-path (first args)]
+  (let [image (imread-reoriented image-path) cascade-path (first args)]
     (doall
      (map (fn [it] (println (str/join " " (flatten [image-path it]))))
           (filter

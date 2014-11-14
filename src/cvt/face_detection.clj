@@ -16,7 +16,7 @@
 
 (defn face-detect
   [image-path]
-  (let [image   (Highgui/imread image-path)
+  (let [image   (imread-reoriented image-path)
         image2  (Mat.)
         face-classifier (CascadeClassifier. (.getPath (io/file (io/resource "cascades/lbpcascades/lbpcascade_frontalface.xml"))))
         face-detected   (atom [])]

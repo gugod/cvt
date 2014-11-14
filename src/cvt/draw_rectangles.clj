@@ -1,4 +1,5 @@
 (ns cvt.draw-rectangles
+  (:use cvt.core)
   (:require [clojure.string :as str])
   (:import
    (org.opencv.core Core Point Scalar)
@@ -15,7 +16,7 @@
 
 (defn -main
   [output-image-path input-image-path & rectangles]
-  (let [image (Highgui/imread input-image-path)]
+  (let [image (imread-reoriented input-image-path)]
     (doall (map (fn [bbox] (draw-bbox image bbox)) rectangles))
     (Highgui/imwrite output-image-path image)
     (println "done")))
