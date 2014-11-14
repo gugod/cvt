@@ -9,7 +9,10 @@
 (defn imread-reoriented
   ""
   [image-path]
-  (Highgui/imread (.getPath (ceo/without-exif (io/file image-path)))))
+  (Highgui/imread
+   (if (re-find #".((?i)jpe?g)$" image-path)
+     (.getPath (ceo/without-exif (io/file image-path)))
+     image-path)))
 
 (defn image-file-seq
   "file-seq + filter that gives only a sequence of image files."
